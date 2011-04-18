@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MarktScannerApp</string>
+    <string name="btn_scanobj">Scanne Objekt</string>
+    <string name="tx_titelStartseite">Startseite</string>
+</resources>
