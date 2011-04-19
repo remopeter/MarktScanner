@@ -10,7 +10,11 @@ public class MarktScannerDatenbank extends SQLiteOpenHelper{
 	private static final String DATENBANKNAME="markscanner.db";
 	private static final int DATENBANK_VERSION=1;
 	
-	private static final String SQL_CREATE_DB="";
+	private static final String SQL_CREATE_DB="" +
+			"create table ARTIKEL" +
+			"create table HAENDLER" +
+			"create table ARTIKEL_GRUPPE" +
+			"create table PREIS";
 	private static final String SQL_DROP_DB="";
 	
 	
