@@ -2,5 +2,5 @@
 <resources>
     <string name="app_name">MarktScannerApp</string>
     <string name="btn_scanobj">Scanne Objekt</string>
-    <string name="tx_titelStartseite">Startseite</string>
+    <string name="tx_titelStartseite">Startseite V0.1</string>
 </resources>

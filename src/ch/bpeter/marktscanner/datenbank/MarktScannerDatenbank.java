@@ -19,7 +19,7 @@ public class MarktScannerDatenbank extends SQLiteOpenHelper{
     /**"create table HAENDLER" +
 			"create table ARTIKEL_GRUPPE" +
 			"create table PREIS";**/
-	private static final String SQL_DROP_DB="";
+	private static final String SQL_DROP_DB="DROP TABLE IF EXISTS T_ARTIKEL";
 	
 	
 	public MarktScannerDatenbank(Context context) {
