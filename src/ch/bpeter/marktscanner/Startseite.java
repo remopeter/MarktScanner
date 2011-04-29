@@ -53,6 +53,7 @@ public class Startseite extends Activity {
 	protected void onResume() {
 		super.onResume();
 		db=dbManager.getWritableDatabase();
+		test;
 	}
 
 
