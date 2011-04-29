@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class Startseite extends Activity {
 	private static final int SCANNER_REQUEST_CODE = 0;
-	private MarktScannerDatenbank dbManager=new MarktScannerDatenbank(this);
+	private MarktScannerDatenbank dbManager;
 	private SQLiteDatabase db;
 	
 	/** Called when the activity is first created. */
@@ -24,7 +24,8 @@ public class Startseite extends Activity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.startseite);
-        db=dbManager.getWritableDatabase();
+        dbManager=new MarktScannerDatenbank(this);
+        
         
         Button button = (Button)findViewById(R.id.btn_scanobj);
 		button.setOnClickListener(new OnClickListener() 
@@ -41,6 +42,20 @@ public class Startseite extends Activity {
     }
     
     
+@Override
+	protected void onPause() {
+		db.close();
+		super.onPause();
+	}
+
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		db=dbManager.getWritableDatabase();
+	}
+
+
 public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	if (resultCode == Activity.RESULT_OK && requestCode == SCANNER_REQUEST_CODE) {
 
