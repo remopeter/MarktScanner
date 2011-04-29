@@ -11,11 +11,15 @@ public class MarktScannerDatenbank extends SQLiteOpenHelper{
 	private static final int DATENBANK_VERSION=1;
 	
 	private static final String SQL_CREATE_DB="" +
-			"create table ARTIKEL" +
-			"create table HAENDLER" +
+			"CREATE TABLE T_ARTIKEL " +
+			"(ARTIKEL_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+			"NAME TEXT NOT NULL, " +
+			"FOTO BLOB, " +
+			"BARCODE INTEGER NOT NULL);";
+    /**"create table HAENDLER" +
 			"create table ARTIKEL_GRUPPE" +
-			"create table PREIS";
-	private static final String SQL_DROP_DB="";
+			"create table PREIS";**/
+	private static final String SQL_DROP_DB="DROP TABLE IF EXISTS T_ARTIKEL";
 	
 	
 	public MarktScannerDatenbank(Context context) {
