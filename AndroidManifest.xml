@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="ch.bpeter.marktscanner"
-      android:versionCode="3"
-      android:versionName="0.0.0.2">
+      android:versionCode="4">
     <uses-sdk android:minSdkVersion="7" />
     <uses-permission android:name="android.permission.CAMERA" />
+    	<uses-feature android:name="android.hardware.camera" />
+    	<uses-feature android:name="android.hardware.camera.autofocus" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.FLASHLIGHT" />
@@ -23,6 +24,7 @@
 			android:screenOrientation="landscape"
 			android:configChanges="orientation|keyboardHidden">
 		</activity>
+        <activity android:name=".hardware.Kamera"></activity>
 
     </application>
 </manifest>

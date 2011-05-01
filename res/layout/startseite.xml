@@ -25,4 +25,12 @@
 		android:layout_height="wrap_content"
 		android:layout_margin="10dp">
 	</EditText>
+	<Button 
+    	android:text="@string/btn_takePicture" 
+    	android:id="@+id/btn_takePicture"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_margin="10dp"
+    	android:onClick="takePicture">
+    </Button>
 </LinearLayout>

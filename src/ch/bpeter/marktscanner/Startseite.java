@@ -1,6 +1,10 @@
 package ch.bpeter.marktscanner;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 import ch.bpeter.marktscanner.datenbank.MarktScannerDatenbank;
+import ch.bpeter.marktscanner.hardware.Kamera;
 
 import com.biggu.barcodescanner.client.android.Intents;
 import android.app.Activity;
@@ -12,9 +16,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Startseite extends Activity {
 	private static final int SCANNER_REQUEST_CODE = 0;
+	private static final int KAMERA = 1;
+	
 	private MarktScannerDatenbank dbManager;
 	private SQLiteDatabase db;
 	
@@ -42,7 +49,7 @@ public class Startseite extends Activity {
     }
     
     
-@Override
+    @Override
 	protected void onPause() {
 		db.close();
 		super.onPause();
@@ -56,8 +63,9 @@ public class Startseite extends Activity {
 	}
 
 
-public void onActivityResult(int requestCode, int resultCode, Intent data) {
-	if (resultCode == Activity.RESULT_OK && requestCode == SCANNER_REQUEST_CODE) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// Handeln des Result des Scanners
+		if (resultCode == Activity.RESULT_OK && requestCode == SCANNER_REQUEST_CODE) {
 
 			Bundle extras = data.getExtras();
 			String barcode = extras.getString("SCAN_RESULT");
@@ -71,6 +79,30 @@ public void onActivityResult(int requestCode, int resultCode, Intent data) {
 				long id = stmtInsert.executeInsert();
 				
 			textView.setText("Datensatz mit der ID: "+id+" gespeichert.");
+
 		}
+		// Handeln des Result der Kamera
+		if(resultCode == Activity.RESULT_OK && requestCode==KAMERA){
+			try{
+				/**byte[] bildArr = data.getByteArrayExtra("Bild");
+				File bild = new File(Startseite.this.getFilesDir() + "/bild.jpg");
+				FileOutputStream bildOut = new FileOutputStream(bild);
+				bildOut.write(bildArr);
+				bildOut.flush();
+				bildOut.close();
+				Toast.makeText(Startseite.this, "Gespeichert unter: "+bild.getAbsolutePath(), Toast.LENGTH_SHORT).show();**/
+				Toast.makeText(Startseite.this, "Gespeichert unter: "+data.getDataString(), Toast.LENGTH_SHORT).show();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void takePicture(View v){
+		startActivityForResult(new Intent(this, Kamera.class), KAMERA);
+		/**Button button = (Button)findViewById(R.id.btn_takePicture);
+		if(button.isEnabled())
+			button.setEnabled(false);
+		else button.setEnabled(true);**/
 	}
 }
