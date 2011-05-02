@@ -11,10 +11,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,17 +84,21 @@ public class Startseite extends Activity {
 			textView.setText("Datensatz mit der ID: "+id+" gespeichert.");
 
 		}
+		
 		// Handeln des Result der Kamera
 		if(resultCode == Activity.RESULT_OK && requestCode==KAMERA){
 			try{
-				/**byte[] bildArr = data.getByteArrayExtra("Bild");
+				byte[] bildArr = data.getByteArrayExtra("BildData");
 				File bild = new File(Startseite.this.getFilesDir() + "/bild.jpg");
 				FileOutputStream bildOut = new FileOutputStream(bild);
 				bildOut.write(bildArr);
 				bildOut.flush();
 				bildOut.close();
-				Toast.makeText(Startseite.this, "Gespeichert unter: "+bild.getAbsolutePath(), Toast.LENGTH_SHORT).show();**/
-				Toast.makeText(Startseite.this, "Gespeichert unter: "+data.getDataString(), Toast.LENGTH_SHORT).show();
+				Toast.makeText(Startseite.this, "Gespeichert unter: "+bild.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+				ImageView image = (ImageView)findViewById(R.id.iv_produktBild);
+				Bitmap bm = BitmapFactory.decodeFile("Pfadangabe");
+				image.setImageBitmap(bm);
+				//Toast.makeText(Startseite.this, "Gespeichert unter: "+data.getExtras().getString("Bild"), Toast.LENGTH_SHORT).show();
 			}catch(Exception e){
 				e.printStackTrace();
 			}

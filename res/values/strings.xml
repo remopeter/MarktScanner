@@ -2,5 +2,6 @@
 <resources>
     <string name="app_name">MarktScannerApp</string>
     <string name="btn_takePicture">Mache Foto</string><string name="btn_scanobj">Scanne Objekt</string>
-    <string name="tx_titelStartseite">Startseite Version 4</string>
+    <string name="tx_titelStartseite">Startseite Version 5</string>
+    <item name="iv_produktBild" type="id"></item>
 </resources>

@@ -33,4 +33,11 @@
     	android:layout_margin="10dp"
     	android:onClick="takePicture">
     </Button>
+    <ImageView
+    	android:id="@id/iv_produktBild"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_margin="10dp">
+    
+    </ImageView>
 </LinearLayout>

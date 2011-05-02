@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="ch.bpeter.marktscanner"
-      android:versionCode="4">
+      android:versionCode="5">
     <uses-sdk android:minSdkVersion="7" />
     <uses-permission android:name="android.permission.CAMERA" />
     	<uses-feature android:name="android.hardware.camera" />
@@ -20,7 +20,6 @@
         </activity>
         
         <activity android:name=".ScannerActivity"
-			android:label="Scanner Activity"
 			android:screenOrientation="landscape"
 			android:configChanges="orientation|keyboardHidden">
 		</activity>

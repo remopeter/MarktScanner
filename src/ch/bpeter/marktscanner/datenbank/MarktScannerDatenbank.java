@@ -7,14 +7,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MarktScannerDatenbank extends SQLiteOpenHelper{
 
 	private static final String DATENBANKNAME="markscanner.db";
-	private static final int DATENBANK_VERSION=1;
+	private static final int DATENBANK_VERSION=2;
 	
 	private static final String SQL_CREATE_DB="" +
 			"CREATE TABLE T_ARTIKEL " +
 			"(ARTIKEL_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
 			"NAME TEXT NOT NULL, " +
-			"FOTO BLOB, " +
-			"BARCODE INTEGER NOT NULL);";
+			"FOTO TEXT, " +
+			"BARCODE TEXT NOT NULL);";
     /**"create table HAENDLER" +
 			"create table ARTIKEL_GRUPPE" +
 			"create table PREIS";**/

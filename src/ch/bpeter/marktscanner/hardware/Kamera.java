@@ -21,7 +21,7 @@ public class Kamera extends Activity implements Callback {
 
 	SurfaceView mSurfaceView;
 	private Camera mCamera;
-	
+	private static Intent intent=new Intent();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,17 +61,24 @@ public class Kamera extends Activity implements Callback {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		/**PictureCallback picCallback = new PictureCallback() {
-			
+		PictureCallback picCallback = new PictureCallback() {
 			public void onPictureTaken(byte[] data, Camera camera) {
-				intent.putExtra("Bild", data);
+				intent.putExtra("BildData", data);
 			}
 		};
-		mCamera.takePicture(null, null, picCallback);**/
-		Intent intent=new Intent(this, Startseite.class);
+		mCamera.takePicture(null, null, picCallback);
 		intent.putExtra("Bild", "onTouch OK");
 		setResult(RESULT_OK, intent);
+		finish();
 		return super.onTouchEvent(event);
+	}
+
+	@Override
+	public void finish() {
+		mCamera.stopPreview();
+		mCamera.release();
+		mCamera=null;
+		super.finish();
 	}
 
 }
