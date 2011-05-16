@@ -76,14 +76,7 @@ public class Kamera extends Activity implements Callback {
 		mCamera.takePicture(null, null, picCallback);
 		intent.putExtra("Bild", "onTouch OK");
 		setResult(RESULT_OK, intent);
-		finish();
+		super.finish();
 		return super.onTouchEvent(event);
 	}
-
-
-	@Override
-	public void finish() {
-		super.finish();
-	}
-
 }
