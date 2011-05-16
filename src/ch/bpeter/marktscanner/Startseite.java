@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 
 import ch.bpeter.marktscanner.datenbank.MarktScannerDatenbank;
 import ch.bpeter.marktscanner.hardware.Kamera;

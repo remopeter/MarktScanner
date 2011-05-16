@@ -10,7 +10,7 @@ import android.os.Environment;
 
 public class SDCard extends Activity{
 	public String speichereBild(byte[] bildArr, String name) {
-		//sd
+
 		String state = Environment.getExternalStorageState();
 		boolean mExternalStorageAvailable=false;
 		boolean mExternalStorageWriteable=false;

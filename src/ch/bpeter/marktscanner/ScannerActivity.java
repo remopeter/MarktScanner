@@ -1,5 +1,8 @@
 package ch.bpeter.marktscanner;
 
+import android.content.Intent;
+import android.view.MotionEvent;
+
 import com.biggu.barcodescanner.client.android.CaptureActivity;
 
 public class ScannerActivity extends CaptureActivity {

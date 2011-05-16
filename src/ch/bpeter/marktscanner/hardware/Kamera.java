@@ -17,6 +17,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.Window;
+import android.widget.Toast;
 
 public class Kamera extends Activity implements Callback {
 
@@ -70,16 +71,7 @@ public class Kamera extends Activity implements Callback {
 		mCamera.takePicture(null, null, picCallback);
 		intent.putExtra("Bild", "onTouch OK");
 		setResult(RESULT_OK, intent);
-		finish();
+		super.finish();
 		return super.onTouchEvent(event);
 	}
-
-	@Override
-	public void finish() {
-		mCamera.stopPreview();
-		mCamera.release();
-		mCamera=null;
-		super.finish();
-	}
-
 }
