@@ -8,6 +8,15 @@ import com.biggu.barcodescanner.client.android.CaptureActivity;
 public class ScannerActivity extends CaptureActivity {
 
 	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		Intent intent = getIntent();
+		intent.putExtra("SCAN_RESULT", "NoCode");
+		setResult(RESULT_OK, intent);
+		super.finish();
+		return super.onTouchEvent(event);
+	}
+
+	@Override
 	public int get_R_id_preview_view() {
 
 		return R.id.preview_view;

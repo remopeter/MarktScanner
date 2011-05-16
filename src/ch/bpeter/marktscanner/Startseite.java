@@ -14,6 +14,7 @@ import com.biggu.barcodescanner.client.android.Intents;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
@@ -36,7 +37,7 @@ public class Startseite extends Activity {
 	
 	private MarktScannerDatenbank dbManager;
 	private SQLiteDatabase db;
-	private String bild=null;
+	private String bild=null; 
 	
 	/** Called when the activity is first created. */
     @Override
@@ -57,7 +58,8 @@ public class Startseite extends Activity {
 				((Activity)v.getContext()).startActivityForResult(intent, SCANNER_REQUEST_CODE);
 			}
 		});
-		
+		Button btn_takePicture = (Button)findViewById(R.id.btn_takePicture);
+		btn_takePicture.setEnabled(false);
 		/**ImageView image = (ImageView)findViewById(R.id.iv_produktBild);
         Bitmap bMap = BitmapFactory.decodeFile("/data/data/ch.bpeter.marktscanner/files/bild.jpeg");
         image.setImageBitmap(bMap);
@@ -66,8 +68,14 @@ public class Startseite extends Activity {
     
     
     @Override
-	protected void onPause() {
+	protected void onDestroy() {
 		db.close();
+		super.onDestroy();
+	}
+
+
+	@Override
+	protected void onPause() {
 		super.onPause();
 	}
 
@@ -86,32 +94,28 @@ public class Startseite extends Activity {
 			Bundle extras = data.getExtras();
 			String barcode = extras.getString("SCAN_RESULT");
 			TextView textView = (TextView)findViewById(R.id.txt_scanresult);
-			bild=barcode;
-			//textView.setText(barcode);
+			bild=barcode+".jpg";
+			textView.setText(barcode);
 			
 			SQLiteStatement stmtInsert =db.compileStatement(
 					"insert into T_ARTIKEL (NAME,BARCODE) values (?,?)");
-				stmtInsert.bindString(1,"Test");
-				stmtInsert.bindString(2,barcode);
-				long id = stmtInsert.executeInsert();
-				
-			textView.setText("Datensatz mit der ID: "+id+" gespeichert.");
-
+			stmtInsert.bindString(1,"Test");
+			stmtInsert.bindString(2,barcode);
+			long id = stmtInsert.executeInsert();
+			String str[]={"NAME","BARCODE"};
+			Cursor cursor = db.query("T_ARTIKEL", str, "BARCODE", str, "", "", "");
+			Button btn_takePicture = (Button)findViewById(R.id.btn_takePicture);
+			btn_takePicture.setEnabled(true);
+			Toast.makeText(Startseite.this, "Barcode mit der ID: "+id+" in der DB gepeichert gespeichert.", Toast.LENGTH_LONG).show();	
 		}
 		// Handeln des Result der Kamera
 		if(resultCode == Activity.RESULT_OK && requestCode==KAMERA){
 			try{
-				if(bild==null)
-					bild="default.jpg";
-				else
-					bild=bild+".jpg";
-				byte[] bildArr = data.getByteArrayExtra("BildData");
-				SDCard sdCard = new SDCard();
-				Toast.makeText(Startseite.this, "Bild Gespeichert unter: "+sdCard.speichereBild(bildArr, bild), Toast.LENGTH_LONG).show();
-				ImageView image = (ImageView)findViewById(R.id.iv_produktBild);
-		        Bitmap bMap = BitmapFactory.decodeFile("C:/temp/fotos/thomas_dopfer.jpg");
+				Toast.makeText(Startseite.this, "Bild Gespeichert!", Toast.LENGTH_LONG).show();
+				//ImageView image = (ImageView)findViewById(R.id.iv_produktBild);
+		        /**Bitmap bMap = BitmapFactory.decodeFile("C:/temp/fotos/thomas_dopfer.jpg");
 		        image.setImageBitmap(bMap);
-		        image.setVisibility(ImageView.VISIBLE);
+		        image.setVisibility(ImageView.VISIBLE);**/
 				//Toast.makeText(Startseite.this, "Gespeichert unter: "+data.getExtras().getString("Bild"), Toast.LENGTH_SHORT).show();
 			}catch(Exception e){
 				e.printStackTrace();
@@ -120,7 +124,14 @@ public class Startseite extends Activity {
 	}
 
 	public void takePicture(View v){
-		startActivityForResult(new Intent(v.getContext(), Kamera.class), KAMERA);
+		if(bild==null)
+			bild="default.jpg";
+		else
+			if(!(bild.contains(".jpg")||bild.contains(".jpeg")))
+				bild=bild+".jpg";
+		Intent intent = new Intent(v.getContext(), Kamera.class);
+		intent.putExtra("BildName", bild);
+		startActivityForResult(intent, KAMERA);
 		/**Button button = (Button)findViewById(R.id.btn_takePicture);
 		if(button.isEnabled())
 			button.setEnabled(false);
