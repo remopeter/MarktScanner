@@ -1,43 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
-    <TextView
-    	android:text="@string/tx_titelStartseite"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_marginLeft="10dp"
-    	android:layout_marginRight="10dp">
-    </TextView>
-    <Button 
-    	android:text="@string/btn_scanobj" 
-    	android:id="@+id/btn_scanobj"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_margin="10dp"
-    	android:onClick="scanobj">
-    </Button>
-	<EditText 
-		android:text=""
-		android:id="@+id/txt_scanresult"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_margin="10dp">
-	</EditText>
-	<Button 
-    	android:text="@string/btn_takePicture" 
-    	android:id="@+id/btn_takePicture"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_margin="10dp"
-    	android:onClick="takePicture">
-    </Button>
-    <ImageView
-    	android:id="@id/iv_produktBild"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_margin="10dp">
-    
-    </ImageView>
-</LinearLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:orientation="vertical" android:scrollbars="vertical"
+		android:isScrollContainer="true">
+		<TextView android:text="@string/tx_titelStartseite"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
+			android:layout_weight="1">
+		</TextView>
+		<Button android:text="@string/btn_scanobj" android:id="@+id/btn_scanobj"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:layout_margin="10dp" android:onClick="scanobj"
+			android:layout_weight="1">
+		</Button>
+		<EditText android:text="@string/tx_nicht_gescaned"
+			android:id="@+id/txt_scanresult" android:layout_width="fill_parent"
+			android:editable="false" android:layout_height="wrap_content"
+			android:layout_margin="10dp">
+		</EditText>
+		<TextView android:text="@string/tx_name" android:id="@+id/tv_name"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_margin="10dp">
+		</TextView>
+		<EditText android:layout_height="wrap_content"
+			android:layout_width="fill_parent" android:id="@+id/txt_name"
+			android:layout_margin="10dp">
+		</EditText>
+		<Button android:text="@string/btn_takePicture" android:id="@+id/btn_takePicture"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:layout_margin="10dp" android:onClick="takePicture">
+		</Button>
+		<ImageView android:id="@id/iv_produktBild"
+			android:layout_width="fill_parent" android:layout_height="100dp"
+			android:layout_margin="10dp">
+		</ImageView>
+		<Button android:text="@string/btn_speichern" android:id="@+id/btn_speichern"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:layout_margin="10dp" android:onClick="speichern">
+		</Button>
+	</LinearLayout>
+</ScrollView>

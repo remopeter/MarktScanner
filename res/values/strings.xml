@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MarktScannerApp</string>
-    <string name="btn_takePicture">Mache Foto</string><string name="btn_scanobj">Scanne Objekt</string>
+    
+    <string name="btn_takePicture">Mache Foto</string>
+    <string name="btn_scanobj">Scanne Objekt</string>
+    <string name="btn_speichern">Speichern</string>
+    
     <string name="tx_titelStartseite">Startseite Version 5</string>
+    <string name="tx_nicht_gescaned">Nicht gescannt</string>
+    <string name="tx_name">Artikelname:</string>
+    
     <item name="iv_produktBild" type="id"></item>
 </resources>
