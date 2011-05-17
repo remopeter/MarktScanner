@@ -46,7 +46,7 @@ public class Startseite extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.startseite);
         dbManager=new MarktScannerDatenbank(this);
-        
+        db=dbManager.getWritableDatabase();
         Button button = (Button)findViewById(R.id.btn_scanobj);
 		button.setOnClickListener(new OnClickListener() 
 		{
@@ -96,18 +96,35 @@ public class Startseite extends Activity {
 			TextView textView = (TextView)findViewById(R.id.txt_scanresult);
 			bild=barcode+".jpg";
 			textView.setText(barcode);
-			
-			SQLiteStatement stmtInsert =db.compileStatement(
-					"insert into T_ARTIKEL (NAME,BARCODE) values (?,?)");
-			stmtInsert.bindString(1,"Test");
-			stmtInsert.bindString(2,barcode);
-			long id = stmtInsert.executeInsert();
-			String str[]={"NAME","BARCODE"};
-			Cursor cursor = db.query("T_ARTIKEL", str, "BARCODE", str, "", "", "");
-			Button btn_takePicture = (Button)findViewById(R.id.btn_takePicture);
-			btn_takePicture.setEnabled(true);
+			textView.setEnabled(false);
+			long id;
+			String artikelName=null;
+			String artikelBarcode=null;
+			String artikelFoto=null;
+			Cursor cursor = db.query("T_ARTIKEL", new String[]{"ARTIKEL_ID","NAME","BARCODE", "FOTO"}, "BARCODE=?", new String[]{barcode}, "", "", "");
+			if(cursor.getColumnCount()==0){
+				SQLiteStatement stmtInsert =db.compileStatement(
+				"insert into T_ARTIKEL (NAME,BARCODE) values (?,?)");
+				stmtInsert.bindString(1,"Test");
+				stmtInsert.bindString(2,barcode);
+				id = stmtInsert.executeInsert();
+			}else{
+				id = cursor.getLong(0);
+				artikelName= cursor.getString(1);
+				artikelBarcode= cursor.getString(2);
+				artikelFoto= cursor.getString(3);
+			}
+			if(artikelFoto!=null){
+				if(!artikelFoto.equals("")){
+					Button btn_takePicture = (Button)findViewById(R.id.btn_takePicture);
+					btn_takePicture.setEnabled(true);
+				}
+			}
 			Toast.makeText(Startseite.this, "Barcode mit der ID: "+id+" in der DB gepeichert gespeichert.", Toast.LENGTH_LONG).show();	
 		}
+		
+		
+		
 		// Handeln des Result der Kamera
 		if(resultCode == Activity.RESULT_OK && requestCode==KAMERA){
 			try{
