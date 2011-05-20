@@ -69,8 +69,11 @@ public class Kamera extends Activity implements Callback {
 			bildName = extras.getString("BildName");
 		PictureCallback picCallback = new PictureCallback() {
 			public void onPictureTaken(byte[] data, Camera camera) {
+				//intent.putExtra("Bilddaten", data);
 				SDCard sdCard = new SDCard();
 				sdCard.speichereBild(data, bildName);
+				Toast.makeText(Kamera.this, "Fotoooo!", Toast.LENGTH_SHORT);
+				mCamera.unlock();
 			}
 		};
 		mCamera.takePicture(null, null, picCallback);

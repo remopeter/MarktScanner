@@ -59,7 +59,7 @@ public class Startseite extends Activity {
 			}
 		});
 		Button btn_takePicture = (Button)findViewById(R.id.btn_takePicture);
-		btn_takePicture.setEnabled(false);
+		btn_takePicture.setEnabled(true);
 		/**ImageView image = (ImageView)findViewById(R.id.iv_produktBild);
         Bitmap bMap = BitmapFactory.decodeFile("/data/data/ch.bpeter.marktscanner/files/bild.jpeg");
         image.setImageBitmap(bMap);
@@ -102,7 +102,8 @@ public class Startseite extends Activity {
 			String artikelBarcode=null;
 			String artikelFoto=null;
 			Cursor cursor = db.query("T_ARTIKEL", new String[]{"ARTIKEL_ID","NAME","BARCODE", "FOTO"}, "BARCODE=?", new String[]{barcode}, "", "", "");
-			if(cursor.getColumnCount()==0){
+			cursor.moveToNext();
+			if(cursor.getCount()==0){
 				SQLiteStatement stmtInsert =db.compileStatement(
 				"insert into T_ARTIKEL (NAME,BARCODE) values (?,?)");
 				stmtInsert.bindString(1,"Test");
@@ -129,11 +130,10 @@ public class Startseite extends Activity {
 		if(resultCode == Activity.RESULT_OK && requestCode==KAMERA){
 			try{
 				Toast.makeText(Startseite.this, "Bild Gespeichert!", Toast.LENGTH_LONG).show();
-				//ImageView image = (ImageView)findViewById(R.id.iv_produktBild);
-		        /**Bitmap bMap = BitmapFactory.decodeFile("C:/temp/fotos/thomas_dopfer.jpg");
+				ImageView image = (ImageView)findViewById(R.id.iv_produktBild);
+		        Bitmap bMap = BitmapFactory.decodeFile("/sdcard/defailt.jpg");
 		        image.setImageBitmap(bMap);
-		        image.setVisibility(ImageView.VISIBLE);**/
-				//Toast.makeText(Startseite.this, "Gespeichert unter: "+data.getExtras().getString("Bild"), Toast.LENGTH_SHORT).show();
+		        image.setVisibility(ImageView.VISIBLE);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -155,5 +155,26 @@ public class Startseite extends Activity {
 		else button.setEnabled(true);**/
 	}
 	
-	
+	public void speichern(View v){
+		TextView tx_barcode = (TextView)findViewById(R.id.txt_scanresult);
+		TextView tx_name = (TextView)findViewById(R.id.txt_name);
+		String barcode=tx_barcode.getText().toString();
+		String name=tx_name.getText().toString();
+		Cursor cursor = db.query("T_ARTIKEL", new String[]{"ARTIKEL_ID","NAME","BARCODE", "FOTO"}, "BARCODE=?", new String[]{barcode}, "", "", "");
+		if(cursor.getCount()>1){
+			cursor.moveToNext();
+			SQLiteStatement stmtInsert =db.compileStatement(
+				"update T_ARTIKEL (NAME,BARCODE) values (?,?) where ARTIKEL_ID="+cursor.getLong(0));
+			stmtInsert.bindString(1,name);
+			stmtInsert.bindString(2,barcode);
+			stmtInsert.execute();
+		}else{
+			SQLiteStatement stmtInsert =db.compileStatement(
+			"insert into T_ARTIKEL (NAME,BARCODE) values (?,?)");
+			stmtInsert.bindString(1,name);
+			stmtInsert.bindString(2,barcode);
+			long id = stmtInsert.executeInsert();
+			Toast.makeText(Startseite.this, "Gespeichert mit id '"+id+"'.", Toast.LENGTH_SHORT).show();
+		}
+	}
 }
