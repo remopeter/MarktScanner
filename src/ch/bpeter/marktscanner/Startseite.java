@@ -1,29 +1,17 @@
 package ch.bpeter.marktscanner;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.sql.PreparedStatement;
-
 import ch.bpeter.marktscanner.datenbank.MarktScannerDatenbank;
 import ch.bpeter.marktscanner.hardware.Kamera;
-import ch.bpeter.marktscanner.hardware.SDCard;
 
 import com.biggu.barcodescanner.client.android.Intents;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.opengl.Visibility;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -33,7 +21,7 @@ import android.widget.Toast;
 
 public class Startseite extends Activity {
 	private static final int SCANNER_REQUEST_CODE = 0;
-	private static final int KAMERA = 1;
+	private static final int KAMERA_REQUEST_CODE = 1;
 	
 	private MarktScannerDatenbank dbManager;
 	private SQLiteDatabase db;
@@ -47,8 +35,8 @@ public class Startseite extends Activity {
         setContentView(R.layout.startseite);
         dbManager=new MarktScannerDatenbank(this);
         db=dbManager.getWritableDatabase();
-        Button button = (Button)findViewById(R.id.btn_scanobj);
-		button.setOnClickListener(new OnClickListener() 
+        Button btn_scan = (Button)findViewById(R.id.btn_scanobj);
+        btn_scan.setOnClickListener(new OnClickListener() 
 		{
 			public void onClick(View v) 
 			{
@@ -65,26 +53,6 @@ public class Startseite extends Activity {
         image.setImageBitmap(bMap);
         image.setVisibility(ImageView.VISIBLE);**/
     }
-    
-    
-    @Override
-	protected void onDestroy() {
-		db.close();
-		super.onDestroy();
-	}
-
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		db=dbManager.getWritableDatabase();
-	}
 
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -94,40 +62,37 @@ public class Startseite extends Activity {
 			Bundle extras = data.getExtras();
 			String barcode = extras.getString("SCAN_RESULT");
 			TextView textView = (TextView)findViewById(R.id.txt_scanresult);
+			TextView tx_name = (TextView)findViewById(R.id.txt_name);
+			tx_name.setText("");
 			bild=barcode+".jpg";
 			textView.setText(barcode);
 			textView.setEnabled(false);
-			long id;
 			String artikelName=null;
-			String artikelBarcode=null;
 			String artikelFoto=null;
 			Cursor cursor = db.query("T_ARTIKEL", new String[]{"ARTIKEL_ID","NAME","BARCODE", "FOTO"}, "BARCODE=?", new String[]{barcode}, "", "", "");
 			cursor.moveToNext();
-			if(cursor.getCount()==0){
-				SQLiteStatement stmtInsert =db.compileStatement(
-				"insert into T_ARTIKEL (NAME,BARCODE) values (?,?)");
-				stmtInsert.bindString(1,"Test");
-				stmtInsert.bindString(2,barcode);
-				id = stmtInsert.executeInsert();
-			}else{
-				id = cursor.getLong(0);
+			if(cursor.getCount()==1){
 				artikelName= cursor.getString(1);
-				artikelBarcode= cursor.getString(2);
 				artikelFoto= cursor.getString(3);
+				Toast.makeText(Startseite.this, "Barcode in der Datenbank gefunden.", Toast.LENGTH_SHORT).show();
 			}
+			if(artikelName!=null){
+				tx_name.setText(artikelName);
+			}
+			Button btn_takePicture = (Button)findViewById(R.id.btn_takePicture);
+			btn_takePicture.setEnabled(false);
 			if(artikelFoto!=null){
 				if(!artikelFoto.equals("")){
-					Button btn_takePicture = (Button)findViewById(R.id.btn_takePicture);
 					btn_takePicture.setEnabled(true);
 				}
 			}
-			Toast.makeText(Startseite.this, "Barcode mit der ID: "+id+" in der DB gepeichert gespeichert.", Toast.LENGTH_LONG).show();	
+			cursor.close();
 		}
 		
 		
 		
 		// Handeln des Result der Kamera
-		if(resultCode == Activity.RESULT_OK && requestCode==KAMERA){
+		if(resultCode == Activity.RESULT_OK && requestCode==KAMERA_REQUEST_CODE){
 			try{
 				Toast.makeText(Startseite.this, "Bild Gespeichert!", Toast.LENGTH_LONG).show();
 				ImageView image = (ImageView)findViewById(R.id.iv_produktBild);
@@ -148,7 +113,7 @@ public class Startseite extends Activity {
 				bild=bild+".jpg";
 		Intent intent = new Intent(v.getContext(), Kamera.class);
 		intent.putExtra("BildName", bild);
-		startActivityForResult(intent, KAMERA);
+		startActivityForResult(intent, KAMERA_REQUEST_CODE);
 		/**Button button = (Button)findViewById(R.id.btn_takePicture);
 		if(button.isEnabled())
 			button.setEnabled(false);
@@ -161,20 +126,40 @@ public class Startseite extends Activity {
 		String barcode=tx_barcode.getText().toString();
 		String name=tx_name.getText().toString();
 		Cursor cursor = db.query("T_ARTIKEL", new String[]{"ARTIKEL_ID","NAME","BARCODE", "FOTO"}, "BARCODE=?", new String[]{barcode}, "", "", "");
-		if(cursor.getCount()>1){
+		if(cursor.getCount()==1){
 			cursor.moveToNext();
 			SQLiteStatement stmtInsert =db.compileStatement(
-				"update T_ARTIKEL (NAME,BARCODE) values (?,?) where ARTIKEL_ID="+cursor.getLong(0));
-			stmtInsert.bindString(1,name);
-			stmtInsert.bindString(2,barcode);
+				"update T_ARTIKEL set NAME='"+name+"', BARCODE='"+barcode+"' where ARTIKEL_ID="+cursor.getLong(0));
 			stmtInsert.execute();
-		}else{
+			Toast.makeText(Startseite.this, "Der Datensatz wurde gespeichert.", Toast.LENGTH_SHORT).show();
+		}else if(cursor.getCount()==0){
 			SQLiteStatement stmtInsert =db.compileStatement(
 			"insert into T_ARTIKEL (NAME,BARCODE) values (?,?)");
 			stmtInsert.bindString(1,name);
 			stmtInsert.bindString(2,barcode);
 			long id = stmtInsert.executeInsert();
 			Toast.makeText(Startseite.this, "Gespeichert mit id '"+id+"'.", Toast.LENGTH_SHORT).show();
-		}
+		}else
+			Toast.makeText(Startseite.this, "Der Barcode ist in der Datenbank nicht eindeutig.", Toast.LENGTH_SHORT).show();
+		cursor.close();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		db.close();
+		super.onDestroy();
+	}
+
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
+
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		db=dbManager.getWritableDatabase();
 	}
 }

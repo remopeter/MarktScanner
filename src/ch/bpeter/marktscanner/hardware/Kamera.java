@@ -3,9 +3,7 @@ package ch.bpeter.marktscanner.hardware;
 import java.io.IOException;
 
 import ch.bpeter.marktscanner.R;
-import ch.bpeter.marktscanner.Startseite;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
