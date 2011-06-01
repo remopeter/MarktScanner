@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MarktScannerApp</string>
+    <string name="app_name">Marktscanner Version 9</string>
     
+    <!-- Buttons -->
     <string name="btn_takePicture">Mache Foto</string>
-    <string name="btn_scanobj">Scanne Objekt</string>
+    <string name="btn_scanobj">Scan</string>
     <string name="btn_speichern">Speichern</string>
     
-    <string name="tx_titelStartseite">Startseite Version 8</string>
-    <string name="tx_nicht_gescaned">Nicht gescannt</string>
+    <!-- Labels -->
+    <string name="tx_nicht_gescaned">*** Barcode ***</string>
     <string name="tx_name">Artikelname:</string>
+    <string name="tx_barcode">Barcode:</string>
+    <string name="tx_preis">Preis:</string>
+    <string name="tx_haendler">Händler:</string>
     
+    <!-- Texte -->
+    <string name="tx_daten_gespeichert">Die Daten wurden gespeichert.</string>
+    <string name="tx_code_gefunden">Der Barcode wurde in der Datenbank gefunden.</string>
+    <string name="tx_code_neu">Der Barcode ist neu.</string>
+    
+    <!-- Image Views -->
     <item name="iv_produktBild" type="id"></item>
 </resources>

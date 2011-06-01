@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<clay-model clay-version="2.0.1">
+<database-model author="" begin-script="" end-script="" id="1511e28:13030098a0a:-7ff3" name="tmp_tables" sql-dialect-id="jp.azzurri.clay.dialect.SQLite_3_5_6_Dialect" version="1.0">
+<schema-list>
+<schema id="1511e28:13030098a0a:-7ff0" name="DEFAULT_SCHEMA">
+<table-list>
+<table id="1511e28:13030098a0a:-7ff2" name="T_ARTIKEL">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1511e28:13030098a0a:-7fe6" mandatory="false" name="NAME">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1511e28:13030098a0a:-7fe5" mandatory="false" name="BARCODE">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+</column-list>
+<primary-key id="1511e28:13030098a0a:-7ff1" name="PK_T_ARTIKEL"/>
+</table>
+</table-list>
+</schema>
+</schema-list>
+</database-model>
+<diagram>
+<table-figure refid="1511e28:13030098a0a:-7ff2" x="373" y="173"/>
+</diagram>
+</clay-model>

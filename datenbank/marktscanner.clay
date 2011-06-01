@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<clay-model clay-version="2.0.1">
+<database-model author="" begin-script="" end-script="" id="1da5048:1302398a678:-8000" name="marktscanner" sql-dialect-id="jp.azzurri.clay.dialect.SQLite_3_5_6_Dialect" version="1.0">
+<schema-list>
+<schema id="1f9e6e5:130254caa4a:-7ffe" name="DEFAULT_SCHEMA">
+<table-list>
+<table id="1f9e6e5:130254caa4a:-8000" name="T_ARTIKEL">
+<column-list>
+<column auto-increment="true" column-size="0" decimal-digits="0" default-value="" id="1f9e6e5:130254caa4a:-7ffa" mandatory="true" name="ARTIKEL_ID">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1f9e6e5:130254caa4a:-7ffb" mandatory="true" name="NAME">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1f9e6e5:130254caa4a:-7ff9" mandatory="true" name="BARCODE">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1f9e6e5:130254caa4a:-7ff8" mandatory="false" name="FOTO">
+<data-type name="TEXT" selected-variant-pattern="TEXT"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1f9e6e5:130254caa4a:-7f68" mandatory="false" name="MARKE_ID">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+</column-list>
+<primary-key id="1f9e6e5:130254caa4a:-7fff" name="PK_T_ARTIKEL">
+<primary-key-column name="ARTIKEL_ID"/>
+</primary-key>
+<foreign-key-list>
+<foreign-key id="1f9e6e5:130254caa4a:-7f6a" name="FK_T_ARTIKEL_1" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_T_MARKE" referenced-table="T_MARKE" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="MARKE_ID" referenced-key-column-name="MARKE_ID"/>
+</foreign-key>
+</foreign-key-list>
+</table>
+<table id="1f9e6e5:130254caa4a:-7ff7" name="T_MARKE">
+<column-list>
+<column auto-increment="true" column-size="0" decimal-digits="0" default-value="" id="1f9e6e5:130254caa4a:-7ff3" mandatory="true" name="MARKE_ID">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="100" decimal-digits="0" default-value="" id="1f9e6e5:130254caa4a:-7ff2" mandatory="true" name="MARKENNAME">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+</column-list>
+<primary-key id="1f9e6e5:130254caa4a:-7ff6" name="PK_T_MARKE">
+<primary-key-column name="MARKE_ID"/>
+</primary-key>
+</table>
+<table id="1f9e6e5:130254caa4a:-7f5f" name="T_HAENDLER">
+<column-list>
+<column auto-increment="true" column-size="0" decimal-digits="0" default-value="" id="1f9e6e5:130254caa4a:-7f5b" mandatory="true" name="HAENDLER_ID">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="100" decimal-digits="0" default-value="" id="1f9e6e5:130254caa4a:-7f5a" mandatory="true" name="HAENDLERNAME">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+</column-list>
+<primary-key id="1f9e6e5:130254caa4a:-7f5e" name="PK_T_HAENDLER">
+<primary-key-column name="HAENDLER_ID"/>
+</primary-key>
+</table>
+<table id="1f9e6e5:130254caa4a:-7f59" name="T_PREIS">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1f9e6e5:130254caa4a:-7f55" mandatory="false" name="PREIS">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1f9e6e5:130254caa4a:-7f18" mandatory="true" name="ARTIKEL_ID">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1f9e6e5:130254caa4a:-7eb5" mandatory="true" name="HAENDLER_ID">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+</column-list>
+<primary-key id="1f9e6e5:130254caa4a:-7f58" name="PK_T_PREIS"/>
+<foreign-key-list>
+<foreign-key id="1f9e6e5:130254caa4a:-7f1a" name="FK_T_PREIS_1" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_T_ARTIKEL" referenced-table="T_ARTIKEL" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="ARTIKEL_ID" referenced-key-column-name="ARTIKEL_ID"/>
+</foreign-key>
+<foreign-key id="1f9e6e5:130254caa4a:-7eb7" name="FK_T_PREIS_2" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_T_HAENDLER" referenced-table="T_HAENDLER" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="HAENDLER_ID" referenced-key-column-name="HAENDLER_ID"/>
+</foreign-key>
+</foreign-key-list>
+</table>
+</table-list>
+</schema>
+</schema-list>
+</database-model>
+<diagram>
+<table-figure refid="1f9e6e5:130254caa4a:-8000" x="235" y="82"/>
+<table-figure refid="1f9e6e5:130254caa4a:-7ff7" x="549" y="62"/>
+<table-figure refid="1f9e6e5:130254caa4a:-7f5f" x="591" y="199"/>
+<table-figure refid="1f9e6e5:130254caa4a:-7f59" x="410" y="216"/>
+</diagram>
+</clay-model>
