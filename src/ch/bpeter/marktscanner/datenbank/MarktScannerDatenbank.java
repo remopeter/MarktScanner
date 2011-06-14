@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MarktScannerDatenbank extends SQLiteOpenHelper{
 
 	private static final String DATENBANKNAME="markscanner.db";
-	private static final int DATENBANK_VERSION=10;
+	private static final int DATENBANK_VERSION=13;
 	public static final String KEY_WORD = SearchManager.SUGGEST_COLUMN_TEXT_1;
     public static final String KEY_DEFINITION = SearchManager.SUGGEST_COLUMN_TEXT_2;
 	
@@ -30,9 +30,11 @@ public class MarktScannerDatenbank extends SQLiteOpenHelper{
 				"HAENDLER_ID INTEGER NOT NULL CONSTRAINT PK_T_HAENDLER PRIMARY KEY AUTOINCREMENT, " +
 				"HAENDLERNAME VARCHAR(100) NOT NULL);";
 	
+	private static final String SQL_INSERT_T_HAENDLER="INSERT INTO T_HAENDLER ('HAENDLERNAME') VALUES('Coop');";
+	
 	private static final String SQL_CREATE_T_PREIS="" +
 			"CREATE TABLE T_PREIS (" +
-				"PREIS INTEGER, " +
+				"PREIS TEXT, " +
 				"ARTIKEL_ID INTEGER NOT NULL, " +
 				"HAENDLER_ID INTEGER NOT NULL, " +
 				"CONSTRAINT FK_T_PREIS_1 FOREIGN KEY (ARTIKEL_ID) REFERENCES T_ARTIKEL (ARTIKEL_ID), " +
@@ -41,6 +43,9 @@ public class MarktScannerDatenbank extends SQLiteOpenHelper{
 	private static final String SQL_BACKUP_ARTIKEL="INSERT INTO T_ARTIKEL_TMP (NAME, BARCODE) SELECT NAME, BARCODE FROM T_ARTIKEL;";
 	private static final String SQL_CREATE_T_ARTIKEL_TMP="CREATE TABLE T_ARTIKEL_TMP (NAME TEXT, BARCODE TEXT);";
 	private static final String SQL_DROP_T_ARTIKEL="DROP TABLE IF EXISTS T_ARTIKEL;";
+	private static final String SQL_DROP_T_MARKE="DROP TABLE IF EXISTS T_MARKE;";
+	private static final String SQL_DROP_T_HAENDLER="DROP TABLE IF EXISTS T_HAENDLER;";
+	private static final String SQL_DROP_T_PREIS="DROP TABLE IF EXISTS T_PREIS;";
 	private static final String SQL_DROP_T_ARTIKEL_TMP="DROP TABLE IF EXISTS T_ARTIKEL_TMP;";
 	private static final String SQL_RESTORE_ARTIKEL="INSERT INTO T_ARTIKEL (NAME, BARCODE) SELECT NAME, BARCODE FROM T_ARTIKEL_TMP;";
 	
@@ -52,10 +57,14 @@ public class MarktScannerDatenbank extends SQLiteOpenHelper{
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(SQL_DROP_T_ARTIKEL);
+		db.execSQL(SQL_DROP_T_MARKE);
+		db.execSQL(SQL_DROP_T_HAENDLER);
+		db.execSQL(SQL_DROP_T_PREIS);
 		db.execSQL(SQL_CREATE_T_ARTIKEL);
-//		db.execSQL(SQL_CREATE_T_MARKE);
-//		db.execSQL(SQL_CREATE_T_HAENDLER);
-//		db.execSQL(SQL_CREATE_T_PREIS);
+		db.execSQL(SQL_CREATE_T_MARKE);
+		db.execSQL(SQL_CREATE_T_HAENDLER);
+		db.execSQL(SQL_CREATE_T_PREIS);
+		db.execSQL(SQL_INSERT_T_HAENDLER);
 	}
 
 	@Override

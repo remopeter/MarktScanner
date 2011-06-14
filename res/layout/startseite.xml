@@ -20,7 +20,7 @@
 			<EditText 
 				android:id="@+id/tv_scanresult"
 				android:text="@string/tx_nicht_gescaned"
-				android:editable="false"
+				android:editable="true"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_margin="5dp">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Marktscanner Version 9</string>
+    <string name="app_name">Marktscanner Version 10</string>
     
     <!-- Buttons -->
     <string name="btn_takePicture">Mache Foto</string>
