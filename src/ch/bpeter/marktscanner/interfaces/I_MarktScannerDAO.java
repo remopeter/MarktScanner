@@ -1,4 +1,4 @@
-package ch.bpeter.marktscanner.datenbank.tabellen;
+package ch.bpeter.marktscanner.interfaces;
 
 import java.util.ArrayList;
 

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
 import ch.bpeter.marktscanner.datenbank.MarktScannerDatenbank;
+import ch.bpeter.marktscanner.interfaces.I_MarktScannerDAO;
 
 public class ArtikelDAO implements I_MarktScannerDAO{
 	private SQLiteDatabase db;

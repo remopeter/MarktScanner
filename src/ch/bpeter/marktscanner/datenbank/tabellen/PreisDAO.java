@@ -3,6 +3,7 @@ package ch.bpeter.marktscanner.datenbank.tabellen;
 import java.util.ArrayList;
 
 import ch.bpeter.marktscanner.datenbank.MarktScannerDatenbank;
+import ch.bpeter.marktscanner.interfaces.I_MarktScannerDAO;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
