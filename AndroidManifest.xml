@@ -28,6 +28,7 @@
 			android:configChanges="orientation|keyboardHidden">
 		</activity>
         <activity android:name=".hardware.Kamera"></activity>
+        <activity android:name=".HaendlerErfassen"></activity>
 
     </application>
 </manifest>

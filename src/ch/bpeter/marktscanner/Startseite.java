@@ -24,12 +24,14 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class Startseite extends Activity {
 	private static final int SCANNER_REQUEST_CODE = 0;
 	private static final int KAMERA_REQUEST_CODE = 1;
+	private static final int NEW_HAENDLER_REQUEST_CODE = 1;
 	
 	private MarktScannerDatenbank dbManager;
 	private SQLiteDatabase db;
@@ -51,6 +53,15 @@ public class Startseite extends Activity {
         db=dbManager.getWritableDatabase();
         artikelDAO=new ArtikelDAO(dbManager);
         t_haendler = new HaendlerDAO(dbManager);
+        Spinner tx_haendler = (Spinner)findViewById(R.id.tv_haendler);
+		ArrayList<HaendlerVO> haendlerList = t_haendler.findAll();
+		String []haendlername=new String[haendlerList.size()];
+		for(int i=0;i<haendlerList.size();i++){
+			haendlername[i]=haendlerList.get(i).getHaendlername();
+		}
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, haendlername);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		tx_haendler.setAdapter(adapter);
         Button btn_scan = (Button)findViewById(R.id.btn_scanobj);
         btn_scan.setOnClickListener(new OnClickListener() 
 		{
@@ -79,16 +90,6 @@ public class Startseite extends Activity {
 			String barcode = extras.getString("SCAN_RESULT");
 			TextView textView = (TextView)findViewById(R.id.tv_scanresult);
 			TextView tx_name = (TextView)findViewById(R.id.tv_name);
-			AutoCompleteTextView tx_haendler = (AutoCompleteTextView)findViewById(R.id.tv_haendler);
-			tx_haendler.setEnabled(true);
-			
-			ArrayList<HaendlerVO> haendlerList = t_haendler.findAll();
-			String []haendlername=new String[haendlerList.size()];
-			for(int i=0;i<haendlerList.size();i++){
-				haendlername[i]=haendlerList.get(i).getHaendlername();
-			}
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, haendlername);
-			tx_haendler.setAdapter(adapter);
 			tx_name.setText("");
 			bild=barcode+".jpg";
 			textView.setText(barcode);
@@ -131,6 +132,18 @@ public class Startseite extends Activity {
 				e.printStackTrace();
 			}
 		}
+		
+		if(resultCode == Activity.RESULT_OK && requestCode==NEW_HAENDLER_REQUEST_CODE){
+			Spinner tx_haendler = (Spinner)findViewById(R.id.tv_haendler);
+			ArrayList<HaendlerVO> haendlerList = t_haendler.findAll();
+			String []haendlername=new String[haendlerList.size()];
+			for(int i=0;i<haendlerList.size();i++){
+				haendlername[i]=haendlerList.get(i).getHaendlername();
+			}
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, haendlername);
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			tx_haendler.setAdapter(adapter);
+		}
 	}
 
 	public void takePicture(View v){
@@ -151,7 +164,7 @@ public class Startseite extends Activity {
 	public void speichern(View v){
 		TextView tx_barcode = (TextView)findViewById(R.id.tv_scanresult);
 		TextView tx_name = (TextView)findViewById(R.id.tv_name);
-		TextView tx_haendler = (TextView)findViewById(R.id.tv_haendler);
+		Spinner tx_haendler = (Spinner)findViewById(R.id.tv_haendler);
 		String barcode=tx_barcode.getText().toString();
 		String name=tx_name.getText().toString();
 		ArrayList<ArtikelVO> artikel = artikelDAO.findByAttributes(new String[]{"BARCODE"}, new String[]{barcode});
@@ -163,9 +176,14 @@ public class Startseite extends Activity {
 			artikelObj.setBarcode(barcode);
 			artikelObj.setName(name);
 			artikelObj = artikelDAO.save(artikelObj);
-			Toast.makeText(Startseite.this, R.string.tx_daten_gespeichert+" ID = "+artikelObj.getArtikel_id(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(Startseite.this, "Die Daten wurden gespeichert. ID = "+artikelObj.getArtikel_id(), Toast.LENGTH_SHORT).show();
 		}else
-			Toast.makeText(Startseite.this, "Der Barcode ist in der Datenbank nicht eindeutig.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(Startseite.this, R.string.tx_barcode_nicht_eindeutig, Toast.LENGTH_SHORT).show();
+	}
+	
+	public void neuerHaendler(View v){
+		Intent intent = new Intent(v.getContext(), HaendlerErfassen.class);
+		startActivityForResult(intent, NEW_HAENDLER_REQUEST_CODE);
 	}
 	
 	@Override

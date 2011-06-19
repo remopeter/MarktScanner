@@ -65,11 +65,10 @@ public class HaendlerDAO implements I_MarktScannerDAO{
 	
 	public HaendlerVO save(Object obj){
 		HaendlerVO haendlerVO=(HaendlerVO)obj;
-		if(haendlerVO.getHaendler_id()==null||haendlerVO.getHaendler_id().equals("0")){
+		if(haendlerVO.getHaendler_id()==null||haendlerVO.getHaendler_id().equals("")){
 			SQLiteStatement stmtInsert =db.compileStatement(
 				"insert into T_HAENDLER (HAENDLERNAME) values (?)");
 			stmtInsert.bindString(1,haendlerVO.getHaendlername());
-			stmtInsert.execute();
 			long haendler_id=stmtInsert.executeInsert();
 			haendlerVO.setHaendler_id(new Long(haendler_id).toString());
 			return haendlerVO;

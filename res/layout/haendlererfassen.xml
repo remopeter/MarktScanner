@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+  	<EditText 
+		android:id="@+id/tv_neuerHaendler"
+		android:editable="true"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="5dp">
+	</EditText>
+	<Button
+		android:id="@+id/btn_Haendlerspeichern"
+		android:text="@string/btn_speichern"
+		android:onClick="speichern" 
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:layout_margin="5dp">
+	</Button>
+	<Button
+		android:id="@+id/btn_haendlerZurueck"
+		android:text="@string/btn_zurueck"
+		android:onClick="zurueck" 
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:layout_margin="5dp">
+	</Button>
+</LinearLayout>

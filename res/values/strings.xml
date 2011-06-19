@@ -6,6 +6,8 @@
     <string name="btn_takePicture">Mache Foto</string>
     <string name="btn_scanobj">Scan</string>
     <string name="btn_speichern">Speichern</string>
+    <string name="btn_neuerHaendler">Neu</string>
+    <string name="btn_zurueck">Zurück</string>
     
     <!-- Labels -->
     <string name="tx_nicht_gescaned">*** Barcode ***</string>
@@ -16,8 +18,10 @@
     
     <!-- Texte -->
     <string name="tx_daten_gespeichert">Die Daten wurden gespeichert.</string>
+    <string name="tx_barcode_nicht_eindeutig">Der Barcode ist in der Datenbank nicht eindeutig.</string>
     <string name="tx_code_gefunden">Der Barcode wurde in der Datenbank gefunden.</string>
     <string name="tx_code_neu">Der Barcode ist neu.</string>
+    <string name="tx_haendler_existiert">Der Händler existiert bereits.</string>
     
     <!-- Image Views -->
     <item name="iv_produktBild" type="id"></item>
