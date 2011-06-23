@@ -128,4 +128,16 @@ public class ArtikelDAO implements I_MarktScannerDAO{
 			return artikelVO;
 		}
 	}
+
+	public boolean deleteById(String id) {
+		try{
+			SQLiteStatement stmtDelete =db.compileStatement(
+				"delete T_ARTIKEL where ARTIKEL_ID=?");
+			stmtDelete.bindString(1,id);
+			stmtDelete.execute();
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+	}
 }

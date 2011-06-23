@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MarktScannerDatenbank extends SQLiteOpenHelper{
 
 	private static final String DATENBANKNAME="markscanner.db";
-	private static final int DATENBANK_VERSION=13;
+	private static final int DATENBANK_VERSION=14;
 	public static final String KEY_WORD = SearchManager.SUGGEST_COLUMN_TEXT_1;
     public static final String KEY_DEFINITION = SearchManager.SUGGEST_COLUMN_TEXT_2;
 	

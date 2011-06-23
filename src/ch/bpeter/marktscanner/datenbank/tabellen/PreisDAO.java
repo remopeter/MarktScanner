@@ -98,4 +98,16 @@ public class PreisDAO implements I_MarktScannerDAO {
 		}
 	}
 
+	public boolean deleteById(String id) {
+		try{
+			SQLiteStatement stmtDelete =db.compileStatement(
+				"delete T_PREIS where ARTIKEL_ID=?");
+			stmtDelete.bindString(1,id);
+			stmtDelete.execute();
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+	}
+
 }

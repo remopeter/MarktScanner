@@ -1,12 +1,16 @@
 package ch.bpeter.marktscanner;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ch.bpeter.marktscanner.datenbank.MarktScannerDatenbank;
 import ch.bpeter.marktscanner.datenbank.tabellen.ArtikelDAO;
 import ch.bpeter.marktscanner.datenbank.tabellen.ArtikelVO;
 import ch.bpeter.marktscanner.datenbank.tabellen.HaendlerDAO;
 import ch.bpeter.marktscanner.datenbank.tabellen.HaendlerVO;
+import ch.bpeter.marktscanner.datenbank.tabellen.PreisDAO;
+import ch.bpeter.marktscanner.datenbank.tabellen.PreisVO;
 import ch.bpeter.marktscanner.hardware.Kamera;
 
 import com.biggu.barcodescanner.client.android.Intents;
@@ -31,13 +35,14 @@ import android.widget.Toast;
 public class Startseite extends Activity {
 	private static final int SCANNER_REQUEST_CODE = 0;
 	private static final int KAMERA_REQUEST_CODE = 1;
-	private static final int NEW_HAENDLER_REQUEST_CODE = 1;
+	private static final int NEW_HAENDLER_REQUEST_CODE = 2;
 	
 	private MarktScannerDatenbank dbManager;
 	private SQLiteDatabase db;
 	private String bild=null; 
 	private ArtikelDAO artikelDAO;
-	private HaendlerDAO t_haendler;
+	private PreisDAO preisDAO;
+	private HaendlerDAO haendlerDAO;
 	
 	private static final String[] HAENDLER = new String[] {
         "Coop", "Migros", "Denner", "Aldi", "Lidl"
@@ -52,9 +57,10 @@ public class Startseite extends Activity {
         dbManager=new MarktScannerDatenbank(this);
         db=dbManager.getWritableDatabase();
         artikelDAO=new ArtikelDAO(dbManager);
-        t_haendler = new HaendlerDAO(dbManager);
+        haendlerDAO = new HaendlerDAO(dbManager);
+        preisDAO = new PreisDAO(dbManager);
         Spinner tx_haendler = (Spinner)findViewById(R.id.tv_haendler);
-		ArrayList<HaendlerVO> haendlerList = t_haendler.findAll();
+		ArrayList<HaendlerVO> haendlerList = haendlerDAO.findAll();
 		String []haendlername=new String[haendlerList.size()];
 		for(int i=0;i<haendlerList.size();i++){
 			haendlername[i]=haendlerList.get(i).getHaendlername();
@@ -135,7 +141,7 @@ public class Startseite extends Activity {
 		
 		if(resultCode == Activity.RESULT_OK && requestCode==NEW_HAENDLER_REQUEST_CODE){
 			Spinner tx_haendler = (Spinner)findViewById(R.id.tv_haendler);
-			ArrayList<HaendlerVO> haendlerList = t_haendler.findAll();
+			ArrayList<HaendlerVO> haendlerList = haendlerDAO.findAll();
 			String []haendlername=new String[haendlerList.size()];
 			for(int i=0;i<haendlerList.size();i++){
 				haendlername[i]=haendlerList.get(i).getHaendlername();
@@ -164,18 +170,60 @@ public class Startseite extends Activity {
 	public void speichern(View v){
 		TextView tx_barcode = (TextView)findViewById(R.id.tv_scanresult);
 		TextView tx_name = (TextView)findViewById(R.id.tv_name);
+		TextView tx_preis = (TextView)findViewById(R.id.tv_preis);
 		Spinner tx_haendler = (Spinner)findViewById(R.id.tv_haendler);
 		String barcode=tx_barcode.getText().toString();
 		String name=tx_name.getText().toString();
+		String preis=tx_preis.getText().toString();
+		String haendlername=tx_haendler.getSelectedItem().toString();
 		ArrayList<ArtikelVO> artikel = artikelDAO.findByAttributes(new String[]{"BARCODE"}, new String[]{barcode});
 		if(artikel.size()==1){
 			artikelDAO.save(artikel.get(0));
 			Toast.makeText(Startseite.this, R.string.tx_daten_gespeichert, Toast.LENGTH_SHORT).show();
 		}else if(artikel.size()==0){
 			ArtikelVO artikelObj = new ArtikelVO();
+			HaendlerVO haendlerObj = new HaendlerVO();
+			PreisVO preisObj = new PreisVO();
 			artikelObj.setBarcode(barcode);
 			artikelObj.setName(name);
 			artikelObj = artikelDAO.save(artikelObj);
+			ArrayList<HaendlerVO> haendlerList = haendlerDAO.findByHaendlername(haendlername);
+			if(!preis.equals("")){
+				try{
+					preis="12.22";
+					Pattern pat = Pattern.compile("\\d+\\.\\d\\d");
+					Matcher m = pat.matcher(preis);
+					if(m.matches()){
+						Double doublePreis = new Double(preis);
+					}else{
+						Toast.makeText(Startseite.this, R.string.tx_preis_nicht_gueltig, Toast.LENGTH_LONG).show();
+						return;
+					}
+					
+				}catch(Exception e){
+					Toast.makeText(Startseite.this, R.string.tx_preis_nicht_gueltig, Toast.LENGTH_LONG).show();
+					return;
+				}
+				preisObj.setPreis(preis);
+				preisObj.setArtikel_id(artikelObj.getArtikel_id());
+				
+			}else{
+				Toast.makeText(Startseite.this, R.string.tx_kein_preis, Toast.LENGTH_LONG).show();
+			}
+			if(haendlerList.size()==1){
+				haendlerObj = haendlerList.get(0);
+				preisObj.setHaendler_id(haendlerObj.getHaendler_id());
+				preisDAO.save(preisObj);
+			}
+			if(haendlerList.size()==0){
+				Toast.makeText(Startseite.this, R.string.tx_haendler_nicht_ausgewaehlt, Toast.LENGTH_LONG).show();
+				return;
+			}
+			if(haendlerList.size()>1){
+				Toast.makeText(Startseite.this, R.string.tx_haendler_nicht_eindeutig, Toast.LENGTH_SHORT).show();
+				return;
+			}
+			
 			Toast.makeText(Startseite.this, "Die Daten wurden gespeichert. ID = "+artikelObj.getArtikel_id(), Toast.LENGTH_SHORT).show();
 		}else
 			Toast.makeText(Startseite.this, R.string.tx_barcode_nicht_eindeutig, Toast.LENGTH_SHORT).show();

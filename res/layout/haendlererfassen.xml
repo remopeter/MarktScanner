@@ -20,6 +20,14 @@
 		android:layout_margin="5dp">
 	</Button>
 	<Button
+		android:id="@+id/btn_Haendlerloeschen"
+		android:text="@string/btn_loeschen"
+		android:onClick="loeschen" 
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:layout_margin="5dp">
+	</Button>
+	<Button
 		android:id="@+id/btn_haendlerZurueck"
 		android:text="@string/btn_zurueck"
 		android:onClick="zurueck" 

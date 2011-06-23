@@ -8,6 +8,7 @@
     <string name="btn_speichern">Speichern</string>
     <string name="btn_neuerHaendler">Neu</string>
     <string name="btn_zurueck">Zurück</string>
+    <string name="btn_loeschen">Löschen</string>
     
     <!-- Labels -->
     <string name="tx_nicht_gescaned">*** Barcode ***</string>
@@ -22,6 +23,12 @@
     <string name="tx_code_gefunden">Der Barcode wurde in der Datenbank gefunden.</string>
     <string name="tx_code_neu">Der Barcode ist neu.</string>
     <string name="tx_haendler_existiert">Der Händler existiert bereits.</string>
+    <string name="tx_haendler_geloescht">Der Händler wurde gelöscht.</string>
+    <string name="tx_haendler_nichtGeloescht">Der Händler konnte nicht gelöscht werden.</string>
+    <string name="tx_haendler_nicht_eindeutig">Der Händler ist nicht eindeutig.</string>
+    <string name="tx_haendler_nicht_ausgewaehlt">Es ist kein Händler ausgewählt. Wo wurde das Produkt gekauft?</string>
+    <string name="tx_kein_preis">Es wurde kein Preis angegeben. Wie teuer ist das Produkt?</string>
+    <string name="tx_preis_nicht_gueltig">Der Preis hat keinen gültigen Wert. Format=XXXXX.XX</string>
     
     <!-- Image Views -->
     <item name="iv_produktBild" type="id"></item>

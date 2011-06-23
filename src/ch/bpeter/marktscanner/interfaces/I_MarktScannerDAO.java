@@ -11,4 +11,6 @@ public interface I_MarktScannerDAO {
 	public Object findById(String id);
 	
 	public Object save(Object obj);
+	
+	public boolean deleteById(String id);
 }

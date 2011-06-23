@@ -1,6 +1,7 @@
 package ch.bpeter.marktscanner.datenbank.tabellen;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,7 +17,7 @@ public class HaendlerDAO implements I_MarktScannerDAO{
 	}
 	// Suchmethoden
 	public ArrayList<HaendlerVO> findAll(){
-	    Cursor cursor = db.query("T_HAENDLER", new String[]{"HAENDLER_ID","HAENDLERNAME"}, null, null, "", "", "");
+	    Cursor cursor = db.query("T_HAENDLER", new String[]{"HAENDLER_ID","HAENDLERNAME"}, null, null, "", "", "HAENDLERNAME");
 	    ArrayList<HaendlerVO> list=new ArrayList<HaendlerVO>();
 		if(cursor.getCount()>0){
 			cursor.moveToFirst();
@@ -33,7 +34,7 @@ public class HaendlerDAO implements I_MarktScannerDAO{
 	}
 	
 	public ArrayList<HaendlerVO> findByHaendlername(String name){
-	    Cursor cursor = db.query("T_HAENDLER", new String[]{"HAENDLER_ID","HAENDLERNAME"}, "HAENDLERNAME=?",  new String[]{name}, "", "", "");
+	    Cursor cursor = db.query("T_HAENDLER", new String[]{"HAENDLER_ID","HAENDLERNAME"}, "HAENDLERNAME=?",  new String[]{name}, "", "", "HAENDLERNAME");
 		ArrayList<HaendlerVO> list=new ArrayList<HaendlerVO>();
 		if(cursor.getCount()>0){
 			cursor.moveToFirst();
@@ -89,7 +90,7 @@ public class HaendlerDAO implements I_MarktScannerDAO{
 				attr=attr+", ";
 			}
 		}
-	    Cursor cursor = db.query("T_HAENDLER", new String[]{"HAENDLER_ID","HAENDLERNAME"}, attr, values, "", "", "");
+	    Cursor cursor = db.query("T_HAENDLER", new String[]{"HAENDLER_ID","HAENDLERNAME"}, attr, values, "", "", "HAENDLERNAME");
 		ArrayList<HaendlerVO> list=new ArrayList<HaendlerVO>();
 		if(cursor.getCount()>0){
 			cursor.moveToFirst();
@@ -103,5 +104,29 @@ public class HaendlerDAO implements I_MarktScannerDAO{
 		}
 		cursor.close();
 		return list;
+	}
+	
+	public boolean deleteById(String id) {
+		try{
+			SQLiteStatement stmtDelete =db.compileStatement(
+				"delete T_HAENDLER where ARTIKEL_ID=?");
+			stmtDelete.bindString(1,id);
+			stmtDelete.execute();
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+	}
+	
+	public boolean deleteByHaendlername(String haendlername){
+		ArrayList<HaendlerVO> haendlerList=findByHaendlername(haendlername);
+		Iterator<HaendlerVO> iter = haendlerList.iterator();
+		boolean deleted=true;
+		while(iter.hasNext()){
+			HaendlerVO haendler = iter.next();
+			if(!deleteById(haendler.getHaendler_id()))
+				deleted=false;
+		}
+		return deleted;
 	}
 }

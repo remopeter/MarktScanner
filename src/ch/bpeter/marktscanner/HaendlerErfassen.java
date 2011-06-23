@@ -38,6 +38,15 @@ public class HaendlerErfassen extends Activity {
 		}
 	}
 	
+	public void loeschen(View v){
+		TextView tx_haendlername = (TextView)findViewById(R.id.tv_neuerHaendler);
+		HaendlerDAO haendlerDAO = new HaendlerDAO(dbManager);
+		if(haendlerDAO.deleteByHaendlername(tx_haendlername.getText().toString()))
+			Toast.makeText(HaendlerErfassen.this, R.string.tx_haendler_geloescht, Toast.LENGTH_SHORT).show();
+		else
+			Toast.makeText(HaendlerErfassen.this, R.string.tx_haendler_nichtGeloescht, Toast.LENGTH_SHORT).show();
+	}
+	
 	public void zurueck(View v){
 		setResult(RESULT_OK);
 		super.finish();
